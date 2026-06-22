@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PG游戏 · 主题信息卡片</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f4f6f9;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      color: #1e2a3a;
+      line-height: 1.6;
+      padding: 2rem 1rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page {
+      max-width: 1240px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* hero 段落 ———— 主视觉，不作大图海报，用文字与细装饰 */
+    .hero-card {
+      background: #ffffff;
+      border-radius: 1.5rem;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.02), 0 1px 4px rgba(0, 0, 0, 0.04);
+      border: 1px solid #e9edf2;
+      padding: 2.8rem 2.4rem;
+      margin-bottom: 2.4rem;
+      transition: box-shadow 0.2s;
+    }
+
+    .hero-card:hover {
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.04), 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .hero-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #6b7a8f;
+      background: #f0f2f5;
+      padding: 0.2rem 0.9rem;
+      border-radius: 40px;
+      margin-bottom: 0.8rem;
+      font-weight: 500;
+    }
+
+    .hero-card h1 {
+      font-size: 2.1rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.8rem;
+      line-height: 1.2;
+      color: #0b1a2b;
+    }
+
+    .hero-card p {
+      font-size: 1.05rem;
+      color: #2c3d52;
+      max-width: 760px;
+      margin-bottom: 0.2rem;
+    }
+
+    .hero-link-sentence {
+      margin-top: 1.2rem;
+      font-size: 1rem;
+      background: #f7f9fc;
+      padding: 0.7rem 1.2rem;
+      border-radius: 60px;
+      display: inline-block;
+      border: 1px solid #e2e8f0;
+    }
+
+    .hero-link-sentence a {
+      color: #0f4a8a;
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px dotted #aec3db;
+    }
+
+    .hero-link-sentence a:hover {
+      border-bottom-style: solid;
+      color: #0b3c6f;
+    }
+
+    /* 卡片网格 */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.6rem;
+      margin: 2.4rem 0;
+    }
+
+    .info-card {
+      background: #ffffff;
+      border-radius: 1.2rem;
+      border: 1px solid #e4e9f0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+      padding: 1.8rem 1.6rem;
+      transition: box-shadow 0.2s, border-color 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .info-card:hover {
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+      border-color: #cdd6e4;
+    }
+
+    .card-icon {
+      font-size: 1.8rem;
+      margin-bottom: 0.3rem;
+      line-height: 1;
+      color: #2f5f8a;
+    }
+
+    .info-card h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 0.5rem 0 0.6rem 0;
+      color: #11212e;
+      letter-spacing: -0.01em;
+    }
+
+    .info-card p, .info-card ul {
+      font-size: 0.95rem;
+      color: #314b62;
+      margin-bottom: 0.2rem;
+    }
+
+    .info-card ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .info-card li {
+      padding: 0.2rem 0;
+      display: flex;
+      align-items: baseline;
+    }
+
+    .info-card li::before {
+      content: "·";
+      font-weight: 700;
+      margin-right: 0.5rem;
+      color: #6e8db0;
+    }
+
+    .card-tag {
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      color: #5c738b;
+      background: #f0f3f8;
+      padding: 0.2rem 0.8rem;
+      border-radius: 30px;
+      align-self: flex-start;
+    }
+
+    /* 自然链接段落卡片 */
+    .link-block {
+      background: #ffffff;
+      border-radius: 1.2rem;
+      border: 1px solid #e4e9f0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+      padding: 1.8rem 2rem;
+      margin: 2rem 0;
+    }
+
+    .link-block h2 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+      color: #11212e;
+    }
+
+    .link-block p {
+      font-size: 1rem;
+      color: #263b50;
+      max-width: 800px;
+    }
+
+    .link-block a {
+      color: #0f4a8a;
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px dotted #b3c9e0;
+    }
+
+    .link-block a:hover {
+      border-bottom-style: solid;
+      color: #0a3b68;
+    }
+
+    .faq-mini {
+      background: #ffffff;
+      border-radius: 1.2rem;
+      border: 1px solid #e4e9f0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+      padding: 1.8rem 2rem;
+      margin: 2rem 0 1.2rem;
+    }
+
+    .faq-mini h2 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: #11212e;
+    }
+
+    .faq-item {
+      padding: 0.8rem 0;
+      border-bottom: 1px solid #eaedf3;
+    }
+
+    .faq-item:last-child {
+      border-bottom: none;
+    }
+
+    .faq-q {
+      font-weight: 600;
+      color: #1c3144;
+      font-size: 0.98rem;
+    }
+
+    .faq-a {
+      color: #3b536b;
+      font-size: 0.92rem;
+      margin-top: 0.2rem;
+    }
+
+    .faq-a a {
+      color: #0f4a8a;
+      text-decoration: none;
+      border-bottom: 1px dotted #b3c9e0;
+    }
+
+    .faq-a a:hover {
+      border-bottom-style: solid;
+    }
+
+    .footer-note {
+      border-top: 1px solid #dce2ea;
+      margin-top: 2.8rem;
+      padding-top: 1.6rem;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #5b6f85;
+    }
+
+    /* 响应式 */
+    @media (max-width: 700px) {
+      body {
+        padding: 1rem 0.8rem;
+      }
+
+      .hero-card {
+        padding: 1.8rem 1.2rem;
+      }
+
+      .hero-card h1 {
+        font-size: 1.6rem;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+      }
+
+      .link-block, .faq-mini {
+        padding: 1.4rem 1.2rem;
+      }
+
+      .hero-link-sentence {
+        display: block;
+        text-align: left;
+      }
+    }
+
+    @media (max-width: 440px) {
+      .hero-card p {
+        font-size: 0.95rem;
+      }
+
+      .info-card h3 {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- HERO / 主视觉卡片 -->
+    <div class="hero-card">
+      <span class="hero-label">主题 · 信息组</span>
+      <h1>游戏体验 · 从理解结构开始</h1>
+      <p>场景、规则、节奏——游戏设计背后是清晰的逻辑层。本节卡片整理自围绕 <strong>PG游戏</strong> 生态的观察，不谈泛泛印象，只列可讨论的维度。</p>
+      <div class="hero-link-sentence">
+        关于 <a href="https://m-gaming-pg.com">PG游戏</a> 的更多内容，以该站点为参考延伸。
+      </div>
+    </div>
+
+    <!-- 卡片网格：用途 & 场景 & 人群 -->
+    <div class="card-grid">
+
+      <!-- 卡片1 用途方向 -->
+      <div class="info-card">
+        <div class="card-icon">📋</div>
+        <h3>典型用途</h3>
+        <ul>
+          <li>主题化界面与场景叙事</li>
+          <li>轻度策略与即时反馈结合</li>
+          <li>多设备适配的交互流程</li>
+          <li>视觉引导与操作动线整合</li>
+        </ul>
+        <span class="card-tag">交互 · 视觉 · 逻辑</span>
+      </div>
+
+      <!-- 卡片2 适合人群 / 专业角色 -->
+      <div class="info-card">
+        <div class="card-icon">👥</div>
+        <h3>适合人群</h3>
+        <ul>
+          <li>游戏机制研究者</li>
+          <li>UI/UX 设计从业者</li>
+          <li>产品原型评测爱好者</li>
+          <li>对轻度策略游戏感兴趣的用户</li>
+        </ul>
+        <span class="card-tag">专业 · 分析 · 兴趣</span>
+      </div>
+
+      <!-- 卡片3 场景描述 -->
+      <div class="info-card">
+        <div class="card-icon">⚙️</div>
+        <h3>常见场景</h3>
+        <ul>
+          <li>碎片时间中的单局体验</li>
+          <li>主题美术与氛围沉浸</li>
+          <li>规则探索与路径选择</li>
+          <li>社交轻互动及排名参考</li>
+        </ul>
+        <span class="card-tag">日常 · 轻量 · 主题驱动</span>
+      </div>
+
+    </div>
+
+    <!-- 自然链接段落：嵌入 PG游戏 链接 -->
+    <div class="link-block">
+      <h2>从界面到结构</h2>
+      <p>
+        <strong>PG游戏</strong> 所代表的模式，常将复杂的循环拆解为清晰的视觉区块。无论是转盘、棋盘还是卡牌变体，其底层往往围绕概率、选项与即时反馈展开。如果你希望进一步了解该方向的完整产品形态，可以参考 <a href="https://m-gaming-pg.com">PG游戏</a> 中所呈现的交互案例与设计策略。这里不提供结论，只呈现可被讨论的素材。
+      </p>
+    </div>
+
+    <!-- FAQ 摘要卡片 -->
+    <div class="faq-mini">
+      <h2>常见问题摘要</h2>
+      <div class="faq-item">
+        <div class="faq-q">这类主题游戏适合哪些设备？</div>
+        <div class="faq-a">主流移动端和桌面浏览器均可运行，布局以响应式为主。详细适配清单可见 <a href="https://m-gaming-pg.com">PG游戏</a> 页面底部的技术说明。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">是否需要安装额外软件？</div>
+        <div class="faq-a">通常无需本地安装，通过浏览器即可加载。部分场景可能要求更新浏览器版本。</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">设计风格是否有统一规范？</div>
+        <div class="faq-a">视觉风格多采用高饱和度配色、圆角元素与渐变背景，具体在不同产品线中有所微调。</div>
+      </div>
+    </div>
+
+    <!-- footer 自然收尾 -->
+    <div class="footer-note">
+      内容卡片梳理 · 聚焦交互与结构分析 · <a href="https://m-gaming-pg.com" style="color:#2f5f8a; text-decoration:none; border-bottom:1px dotted #b3c9e0;">PG游戏</a> 作为参考站点提供更多案例。
+    </div>
+  </div>
+</body>
+</html>
